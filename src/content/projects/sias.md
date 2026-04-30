@@ -14,15 +14,8 @@ techs:
   - RustFS
   - Dokploy
   - ApexCharts
-demoUrl: "https://sias-demo.jemartinez.dev"
-testCredentials:
-  - label: "Administrador"
-    user: "admin@test.com"
-    password: "Chetos*01"
-  - label: "CAPTURISTA"
-    user: "capturista@test.com"
-    password: "Chetos*01"
 colSpan: "8"
+available: false
 ---
 
 ## Descripción

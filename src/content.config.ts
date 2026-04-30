@@ -22,6 +22,7 @@ const projectsCollection = defineCollection({
       })
     ).optional(),
     colSpan: z.enum(['4', '8']).default('4'),
+    available: z.boolean().default(true),
   }),
 });
 

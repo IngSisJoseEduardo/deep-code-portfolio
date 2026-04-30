@@ -17,7 +17,7 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
-const { title, description, techs, githubUrl, demoUrl, testCredentials } = project.data;
+const { title, description, techs, githubUrl, demoUrl, testCredentials, available } = project.data;
 
 // Imágenes dinámicas desde src/assets/projects/[slug]/
 const dynamicCover  = getProjectCover(project.id);
@@ -148,14 +148,20 @@ const coverIsLocal = typeof cover === 'object';
     </div>
 
     <!-- CTA footer -->
-    <div class="mt-12 pt-12 border-t border-outline-variant text-center pb-8">
-      <h3 class="text-2xl font-semibold mb-4">¿Te interesa este proyecto?</h3>
-      <p class="text-on-surface-variant mb-8">Hablemos sobre los detalles de implementación o exploremos oportunidades de colaboración.</p>
-      <div class="flex flex-wrap justify-center gap-4">
-        <Button href="/about#contact" variant="primary">Hablemos</Button>
+    {available ? (
+      <div class="mt-12 pt-12 border-t border-outline-variant text-center pb-8">
+        <h3 class="text-2xl font-semibold mb-4">¿Te interesa este proyecto?</h3>
+        <p class="text-on-surface-variant mb-8">Hablemos sobre los detalles de implementación o exploremos oportunidades de colaboración.</p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <Button href="/about#contact" variant="primary">Hablemos</Button>
+          <Button href="/projects" variant="ghost">Más proyectos</Button>
+        </div>
+      </div>
+    ) : (
+      <div class="mt-12 pt-12 border-t border-outline-variant text-center pb-8">
         <Button href="/projects" variant="ghost">Más proyectos</Button>
       </div>
-    </div>
+    )}
   </div>
 </ProjectLayout>
 
