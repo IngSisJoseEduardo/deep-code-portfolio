@@ -7,7 +7,6 @@ category: frontend
 techs:
   - Astro
   - Kommo CRM
-  - Cloudflare
   - SEO
 demoUrl: "https://www.outletseguros.com"
 colSpan: "4"
