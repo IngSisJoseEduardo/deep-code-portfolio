@@ -10,6 +10,8 @@ techs:
   - NestJS
   - JWT
   - PostgreSQL
+  - Claude Code
+  - Google Stitch
 colSpan: "4"
 available: false
 ---

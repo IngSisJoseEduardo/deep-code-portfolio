@@ -8,6 +8,8 @@ techs:
   - Astro
   - Kommo CRM
   - SEO
+  - Claude Code
+  - Google Stitch
 demoUrl: "https://www.outletseguros.com"
 colSpan: "4"
 available: false

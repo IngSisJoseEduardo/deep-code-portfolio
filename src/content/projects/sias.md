@@ -14,6 +14,8 @@ techs:
   - RustFS
   - Dokploy
   - ApexCharts
+  - Claude Code
+  - Google Stitch
 colSpan: "8"
 available: false
 ---
