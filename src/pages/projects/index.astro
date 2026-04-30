@@ -1,0 +1,95 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ui/ProjectCard.astro';
+import { getProjectCover } from '../../lib/projectImages';
+
+const allProjects = await getCollection('projects');
+const sorted = allProjects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const categories = [
+  { value: 'all',       label: 'Todos' },
+  { value: 'frontend',  label: 'Frontend' },
+  { value: 'backend',   label: 'Backend' },
+  { value: 'fullstack', label: 'Fullstack' },
+  { value: 'mobile',    label: 'Móvil' },
+] as const;
+---
+
+<BaseLayout
+  title="Galería de proyectos — José Eduardo Martínez Pérez"
+  description="Proyectos de desarrollo frontend, backend, fullstack y móvil construidos con tecnologías JavaScript modernas."
+>
+  <main class="pt-32 pb-20 max-w-[1200px] mx-auto px-8">
+    <!-- Header -->
+    <div class="mb-12">
+      <p class="text-on-surface-variant text-xs font-medium tracking-widest uppercase mb-3">
+        Todos los proyectos
+      </p>
+      <h1 class="text-5xl font-bold tracking-tight mb-4">Galería de proyectos</h1>
+      <p class="text-on-surface-variant text-lg max-w-2xl leading-relaxed">
+        Una colección de proyectos que demuestran desarrollo JavaScript de pila completa —
+        desde interfaces interactivas hasta sistemas backend escalables.
+      </p>
+    </div>
+
+    <!-- Filters -->
+    <div class="flex flex-wrap gap-2 mb-10" id="filters">
+      {categories.map(({ value, label }) => (
+        <button
+          data-filter={value}
+          class={[
+            'px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 filter-btn',
+            value === 'all'
+              ? 'bg-primary-container text-on-primary-container'
+              : 'bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface border border-outline-variant',
+          ].join(' ')}
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+
+    <!-- Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6" id="projects-grid">
+      {sorted.map((project) => (
+        <div data-category={project.data.category} class="contents">
+          <ProjectCard
+            title={project.data.title}
+            description={project.data.description}
+            techs={project.data.techs}
+            cover={getProjectCover(project.id) ?? project.data.cover}
+            slug={project.id}
+            colSpan={project.data.colSpan}
+            featured={project.data.featured}
+          />
+        </div>
+      ))}
+    </div>
+  </main>
+</BaseLayout>
+
+<script>
+  const filterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const cards = document.querySelectorAll<HTMLElement>('[data-category]');
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter ?? 'all';
+
+      // Update active state
+      filterBtns.forEach((b) => {
+        b.classList.remove('bg-primary-container', 'text-on-primary-container');
+        b.classList.add('bg-surface-container-high', 'text-on-surface-variant', 'border', 'border-outline-variant');
+      });
+      btn.classList.add('bg-primary-container', 'text-on-primary-container');
+      btn.classList.remove('bg-surface-container-high', 'text-on-surface-variant', 'border', 'border-outline-variant');
+
+      // Filter cards
+      cards.forEach((card) => {
+        const show = filter === 'all' || card.dataset.category === filter;
+        (card as HTMLElement).style.display = show ? 'contents' : 'none';
+      });
+    });
+  });
+</script>

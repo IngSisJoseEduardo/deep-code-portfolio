@@ -1,0 +1,182 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TechTag from '../components/ui/TechTag.astro';
+import Button from '../components/ui/Button.astro';
+
+const stack = {
+  Frontend: ['Angular', 'Vue.js', 'TypeScript', 'Astro', 'Tailwind CSS', 'Vite'],
+  Backend: ['NestJS', 'Flask', 'PostgreSQL', 'Node.js', 'Redis', 'REST APIs'],
+  Infrastructure: ['Docker', 'VPS', 'Dokploy', 'S3', 'n8n', 'Claude Code'],
+};
+---
+
+<BaseLayout
+  title="Sobre mí — José Eduardo Martínez Pérez"
+  description="Desarrollador Full Stack con más de 7 años de experiencia en gobierno, energía y finanzas. NestJS, Flask, Angular, Vue.js, Docker."
+>
+  <main class="pt-32 pb-20 max-w-[1200px] mx-auto px-8">
+
+    <!-- Bio section -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-12 mb-20">
+      <!-- Avatar placeholder -->
+      <div class="md:col-span-4">
+        <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant max-w-xs">
+          <img
+            src="/images/avatar.jpeg"
+            alt="José Eduardo Martínez Pérez"
+            class="w-full h-full object-cover"
+          />
+        </div>
+      </div>
+
+      <!-- Bio text -->
+      <div class="md:col-span-8 flex flex-col justify-center">
+        <p class="text-on-surface-variant text-xs font-medium tracking-widest uppercase mb-4">
+          Sobre mí
+        </p>
+        <h1 class="text-5xl font-bold tracking-tight mb-6">
+          José Eduardo
+          <span class="text-primary-container"> Martínez Pérez</span>
+        </h1>
+        <p class="text-on-surface-variant text-lg leading-relaxed mb-4">
+          Desarrollador Full Stack con más de 7 años de experiencia construyendo sistemas de alto impacto
+          en sectores como gobierno, energía y finanzas. Especializado en arquitecturas RESTful con NestJS
+          y Flask, frontends modernos con Angular y Vue.js, y bases de datos relacionales optimizadas con PostgreSQL.
+        </p>
+        <p class="text-on-surface-variant text-lg leading-relaxed mb-8">
+          Adopto activamente el desarrollo asistido por IA como parte central de mi flujo de trabajo:
+          utilizo Claude Code como agente de desarrollo y creo skills personalizadas que estandarizan
+          patrones a lo largo del codebase. Complemento esto con automatización de flujos mediante
+          agentes n8n e infraestructura con Docker, Dokploy y S3.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <Button href="#contact" variant="primary">
+            <span class="material-symbols-outlined text-base leading-none">mail</span>
+            Contáctame
+          </Button>
+          <Button href="/cv" variant="ghost">
+            <span class="material-symbols-outlined text-base leading-none">download</span>
+            Descargar CV
+          </Button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Technical Arsenal -->
+    <div class="mb-20">
+      <div class="mb-10">
+        <p class="text-on-surface-variant text-xs font-medium tracking-widest uppercase mb-3">
+          Habilidades
+        </p>
+        <h2 class="text-3xl font-semibold tracking-tight">Arsenal técnico</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {Object.entries(stack).map(([category, techs]) => (
+          <div class="bg-surface-container border border-outline-variant rounded-xl p-6">
+            <h3 class="text-lg font-semibold mb-4 text-primary">{category}</h3>
+            <div class="flex flex-wrap gap-2">
+              {techs.map((tech) => (
+                <TechTag label={tech} />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Contact form -->
+    <div id="contact" class="max-w-2xl">
+      <div class="mb-10">
+        <p class="text-on-surface-variant text-xs font-medium tracking-widest uppercase mb-3">
+          Conversemos
+        </p>
+        <h2 class="text-3xl font-semibold tracking-tight">Hablemos</h2>
+        <p class="text-on-surface-variant mt-3 leading-relaxed">
+          Abierto a proyectos freelance, posiciones full-time y conversaciones técnicas interesantes.
+        </p>
+      </div>
+
+      <form class="flex flex-col gap-6" name="contact" method="POST">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="flex flex-col gap-2">
+            <label for="name" class="text-sm font-medium text-on-surface-variant tracking-wide">
+              Nombre
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              required
+              placeholder="Juan Pérez"
+              class="bg-surface-container-low border-0 border-b-2 border-outline-variant focus:border-primary-container focus:outline-none text-on-surface p-3 text-sm transition-colors duration-300 placeholder:text-outline"
+            />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label for="email" class="text-sm font-medium text-on-surface-variant tracking-wide">
+              Correo electrónico
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              placeholder="juan@ejemplo.com"
+              class="bg-surface-container-low border-0 border-b-2 border-outline-variant focus:border-primary-container focus:outline-none text-on-surface p-3 text-sm transition-colors duration-300 placeholder:text-outline"
+            />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label for="subject" class="text-sm font-medium text-on-surface-variant tracking-wide">
+            Asunto
+          </label>
+          <input
+            id="subject"
+            name="subject"
+            type="text"
+            required
+            placeholder="Propuesta de proyecto / Oportunidad laboral / Saludo"
+            class="bg-surface-container-low border-0 border-b-2 border-outline-variant focus:border-primary-container focus:outline-none text-on-surface p-3 text-sm transition-colors duration-300 placeholder:text-outline"
+          />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label for="message" class="text-sm font-medium text-on-surface-variant tracking-wide">
+            Mensaje
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            rows={6}
+            required
+            placeholder="Cuéntame sobre tu proyecto o idea..."
+            class="bg-surface-container-low border-0 border-b-2 border-outline-variant focus:border-primary-container focus:outline-none text-on-surface p-3 text-sm transition-colors duration-300 placeholder:text-outline resize-none"
+          ></textarea>
+        </div>
+
+        <div>
+          <Button type="submit" variant="primary">
+            <span class="material-symbols-outlined text-base leading-none">send</span>
+            Enviar mensaje
+          </Button>
+        </div>
+      </form>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+  }
+</style>

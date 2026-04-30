@@ -1,0 +1,74 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import TechTag from './TechTag.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  techs: string[];
+  cover?: ImageMetadata | string;
+  slug: string;
+  colSpan?: '4' | '8';
+  featured?: boolean;
+}
+
+const { title, description, techs, cover, slug, colSpan = '4', featured = false } = Astro.props;
+
+const colClass = colSpan === '8' ? 'md:col-span-8' : 'md:col-span-4';
+const imageClass = colSpan === '8' ? 'aspect-video' : 'h-48';
+const isLocal = cover !== undefined && typeof cover === 'object';
+---
+
+<article class={`group col-span-1 ${colClass} bg-surface-container border border-outline-variant rounded-xl overflow-hidden hover:border-primary-container transition-all duration-300`}>
+  <a href={`/projects/${slug}`} class="block h-full">
+    <!-- Image -->
+    <div class={`relative overflow-hidden ${imageClass}`}>
+      {isLocal ? (
+        <Image
+          src={cover as ImageMetadata}
+          alt={title}
+          class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+          loading="lazy"
+          widths={[400, 800]}
+          sizes="(max-width: 768px) 100vw, 50vw"
+        />
+      ) : (
+        <img
+          src={cover ?? '/images/projects/placeholder.svg'}
+          alt={title}
+          class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+          loading="lazy"
+          onerror="this.src='/images/projects/placeholder.svg'"
+        />
+      )}
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+
+      {featured && (
+        <span class="absolute top-3 left-3 bg-primary-container/90 text-on-primary-container text-xs font-medium px-2.5 py-1 rounded-full">
+          Destacado
+        </span>
+      )}
+    </div>
+
+    <!-- Content -->
+    <div class="p-5 flex flex-col gap-3">
+      <h3 class="text-on-surface font-semibold text-lg leading-tight group-hover:text-primary transition-colors duration-300">
+        {title}
+      </h3>
+      <p class="text-on-surface-variant text-sm leading-relaxed line-clamp-2">
+        {description}
+      </p>
+
+      <!-- Tech tags -->
+      <div class="flex flex-wrap gap-2 mt-auto pt-1">
+        {techs.slice(0, 4).map((tech) => (
+          <TechTag label={tech} />
+        ))}
+        {techs.length > 4 && (
+          <span class="text-on-surface-variant text-xs self-center">+{techs.length - 4} más</span>
+        )}
+      </div>
+    </div>
+  </a>
+</article>

@@ -1,0 +1,44 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  cover?: string;
+}
+
+const { title, description, cover } = Astro.props;
+---
+
+<BaseLayout title={`${title} — Deep Code Portfolio`} description={description} ogImage={cover}>
+  <main class="pt-24 pb-20">
+    <!-- Breadcrumb -->
+    <div class="max-w-[1200px] mx-auto px-8 mb-8">
+      <nav class="flex items-center gap-2 text-sm text-on-surface-variant">
+        <a href="/" class="hover:text-primary transition-colors duration-300">Inicio</a>
+        <span class="material-symbols-outlined text-base leading-none">chevron_right</span>
+        <a href="/projects" class="hover:text-primary transition-colors duration-300">Proyectos</a>
+        <span class="material-symbols-outlined text-base leading-none">chevron_right</span>
+        <span class="text-on-surface truncate max-w-[200px]">{title}</span>
+      </nav>
+    </div>
+
+    <slot />
+  </main>
+</BaseLayout>
+
+<style>
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+  }
+</style>

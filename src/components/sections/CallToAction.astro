@@ -1,0 +1,42 @@
+---
+import Button from '../ui/Button.astro';
+---
+
+<section class="bg-surface-container-low border-y border-zinc-900 py-20">
+  <div class="max-w-[1200px] mx-auto px-8 text-center">
+    <h2 class="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
+      Construyamos juntos<br />
+      <span class="text-primary-container">el siguiente nivel</span>
+    </h2>
+    <p class="text-on-surface-variant text-lg leading-relaxed mb-10 max-w-xl mx-auto">
+      Abierto a proyectos freelance, posiciones full-time y colaboraciones técnicas.
+      Hablemos de lo que podemos construir.
+    </p>
+
+    <div class="flex flex-wrap justify-center gap-4">
+      <Button href="/about#contact" variant="primary">
+        <span class="material-symbols-outlined text-base leading-none">mail</span>
+        Hablemos
+      </Button>
+      <Button href="/projects" variant="ghost">
+        <span class="material-symbols-outlined text-base leading-none">folder_open</span>
+        Ver proyectos
+      </Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+  }
+</style>

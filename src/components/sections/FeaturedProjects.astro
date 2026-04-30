@@ -1,0 +1,74 @@
+---
+import { getCollection } from 'astro:content';
+import ProjectCard from '../ui/ProjectCard.astro';
+import { getProjectCover } from '../../lib/projectImages';
+
+const allProjects = await getCollection('projects');
+const featured = allProjects
+  .filter((p) => p.data.featured)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const year = new Date().getFullYear();
+---
+
+<section class="py-20 border-t border-outline-variant/30">
+  <div class="max-w-[1200px] mx-auto px-8">
+    <!-- Header -->
+    <div class="flex items-end justify-between mb-10">
+      <div>
+        <p class="text-on-surface-variant text-xs font-medium tracking-widest uppercase mb-2">
+          Portafolio
+        </p>
+        <h2 class="text-3xl font-semibold tracking-tight">Proyectos destacados</h2>
+      </div>
+      <span class="text-on-surface-variant text-sm hidden md:block">{year}</span>
+    </div>
+
+    <!-- Grid -->
+    {featured.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        {featured.map((project) => (
+          <ProjectCard
+            title={project.data.title}
+            description={project.data.description}
+            techs={project.data.techs}
+            cover={getProjectCover(project.id) ?? project.data.cover}
+            slug={project.id}
+            colSpan={project.data.colSpan}
+            featured={project.data.featured}
+          />
+        ))}
+      </div>
+    ) : (
+      <div class="py-20 text-center text-on-surface-variant">
+        Aún no hay proyectos destacados.
+      </div>
+    )}
+
+    <!-- View all link -->
+    <div class="mt-10 text-center">
+      <a
+        href="/projects"
+        class="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors duration-300 text-sm font-medium"
+      >
+        Ver todos los proyectos
+        <span class="material-symbols-outlined text-base leading-none">arrow_forward</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+  }
+</style>

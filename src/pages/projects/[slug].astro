@@ -1,0 +1,166 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import ProjectLayout from '../../layouts/ProjectLayout.astro';
+import TechTag from '../../components/ui/TechTag.astro';
+import Button from '../../components/ui/Button.astro';
+import PhotoGallery from '../../components/ui/PhotoGallery.astro';
+import { getProjectCover, getProjectGallery } from '../../lib/projectImages';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const { title, description, techs, githubUrl, demoUrl, testCredentials } = project.data;
+
+// Imágenes dinámicas desde src/assets/projects/[slug]/
+const dynamicCover  = getProjectCover(project.id);
+const dynamicGallery = getProjectGallery(project.id);
+
+// Fallback a los campos del frontmatter si no hay imágenes en la carpeta
+const cover   = dynamicCover  ?? project.data.cover;
+const gallery = dynamicGallery.length > 0 ? dynamicGallery : (project.data.gallery ?? []);
+
+const coverIsLocal = typeof cover === 'object';
+---
+
+<ProjectLayout title={title} description={description} cover={cover}>
+  <div class="max-w-[1200px] mx-auto px-8">
+
+    <!-- Hero image -->
+    <div class="relative rounded-xl overflow-hidden aspect-video mb-16">
+      {coverIsLocal ? (
+        <Image
+          src={cover as any}
+          alt={title}
+          class="w-full h-full object-cover opacity-80"
+          widths={[800, 1200]}
+          sizes="(max-width: 1200px) 100vw, 1200px"
+        />
+      ) : (
+        <img
+          src={cover as string ?? '/images/projects/placeholder.svg'}
+          alt={title}
+          class="w-full h-full object-cover opacity-80"
+          onerror="this.src='/images/projects/placeholder.svg'"
+        />
+      )}
+      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+      <div class="absolute bottom-0 left-0 right-0 p-8">
+        <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-3">{title}</h1>
+        <p class="text-on-surface-variant text-lg max-w-2xl">{description}</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <!-- Main content -->
+      <div class="lg:col-span-2">
+        <!-- Architecture section -->
+        <div class="mb-12">
+          <h2 class="text-2xl font-semibold tracking-tight mb-6 pb-4 border-b border-outline-variant">
+            Arquitectura del proyecto
+          </h2>
+          <div class="prose prose-invert prose-headings:font-semibold prose-headings:tracking-tight prose-h3:text-xl prose-p:text-on-surface-variant prose-p:leading-relaxed max-w-none">
+            <Content />
+          </div>
+        </div>
+
+        <!-- Gallery -->
+        {gallery.length > 0 && (
+          <div class="mb-12">
+            <h2 class="text-2xl font-semibold tracking-tight mb-6 pb-4 border-b border-outline-variant">
+              Documentación visual
+            </h2>
+            <PhotoGallery images={gallery as any} title={title} />
+          </div>
+        )}
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="lg:col-span-1">
+        <!-- Tech stack -->
+        <div class="bg-surface-container rounded-xl p-6 border border-outline-variant mb-6 sticky top-24">
+          <h3 class="text-lg font-semibold mb-4">Stack tecnológico</h3>
+          <div class="flex flex-wrap gap-2 mb-8">
+            {techs.map((tech) => (
+              <TechTag label={tech} />
+            ))}
+          </div>
+
+          <!-- Links -->
+          <div class="flex flex-col gap-3">
+            {githubUrl && (
+              <Button href={githubUrl} variant="ghost" target="_blank" class="w-full justify-center">
+                <span class="material-symbols-outlined text-base leading-none">code</span>
+                Ver código
+              </Button>
+            )}
+            {demoUrl && (
+              <Button href={demoUrl} variant="primary" target="_blank" class="w-full justify-center">
+                <span class="material-symbols-outlined text-base leading-none">open_in_new</span>
+                Demo en vivo
+              </Button>
+            )}
+
+            <!-- Credenciales de prueba -->
+            {testCredentials && testCredentials.length > 0 && (
+              <div class="mt-6 pt-6 border-t border-outline-variant">
+                <p class="text-xs font-medium tracking-widest uppercase text-on-surface-variant mb-3">
+                  Credenciales de prueba
+                </p>
+                <div class="flex flex-col gap-3">
+                  {testCredentials.map((cred) => (
+                    <div class="bg-surface-container-high rounded-lg p-3 text-xs font-mono">
+                      <p class="text-primary mb-1.5 font-sans font-medium text-[11px] uppercase tracking-wider not-italic">
+                        {cred.label}
+                      </p>
+                      <div class="flex items-center justify-between gap-2 mb-1">
+                        <span class="text-on-surface-variant">usuario</span>
+                        <span class="text-on-surface select-all">{cred.user}</span>
+                      </div>
+                      <div class="flex items-center justify-between gap-2">
+                        <span class="text-on-surface-variant">password</span>
+                        <span class="text-on-surface select-all">{cred.password}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- CTA footer -->
+    <div class="mt-12 pt-12 border-t border-outline-variant text-center pb-8">
+      <h3 class="text-2xl font-semibold mb-4">¿Te interesa este proyecto?</h3>
+      <p class="text-on-surface-variant mb-8">Hablemos sobre los detalles de implementación o exploremos oportunidades de colaboración.</p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <Button href="/about#contact" variant="primary">Hablemos</Button>
+        <Button href="/projects" variant="ghost">Más proyectos</Button>
+      </div>
+    </div>
+  </div>
+</ProjectLayout>
+
+<style>
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+  }
+</style>

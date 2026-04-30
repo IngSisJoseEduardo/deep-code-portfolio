@@ -1,0 +1,61 @@
+---
+import Button from '../ui/Button.astro';
+---
+
+<section class="min-h-screen flex items-center pt-16">
+  <div class="max-w-[1200px] mx-auto px-8 py-20">
+    <div class="max-w-3xl">
+      <!-- Availability badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container border border-outline-variant mb-8">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+        </span>
+        <span class="text-on-surface-variant text-sm font-medium">Disponible para nuevas oportunidades</span>
+      </div>
+
+      <!-- Heading -->
+      <p class="text-on-surface-variant text-xl font-medium mb-4">
+        Hola, soy <span class="text-on-surface font-bold">José Eduardo Martínez Pérez</span>
+      </p>
+      <h1 class="text-5xl md:text-6xl font-bold tracking-tight leading-[1.1] mb-6">
+        Sistemas de alto impacto,
+        <span class="text-primary-container"> arquitecturas</span>
+        <br />que escalan
+      </h1>
+
+      <!-- Description -->
+      <p class="text-on-surface-variant text-lg leading-relaxed mb-10 max-w-2xl">
+        Desarrollador Full Stack con más de 7 años de experiencia en sectores de gobierno, energía y finanzas.
+        Especializado en NestJS, Flask, Angular y Vue.js — con IA integrada como parte central del flujo de desarrollo.
+      </p>
+
+      <!-- CTAs -->
+      <div class="flex flex-wrap gap-4">
+        <Button href="/projects" variant="primary">
+          <span class="material-symbols-outlined text-base leading-none">folder_open</span>
+          Ver proyectos
+        </Button>
+        <Button href="/about" variant="ghost">
+          <span class="material-symbols-outlined text-base leading-none">terminal</span>
+          Stack técnico
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+  }
+</style>
