@@ -97,7 +97,7 @@ const stack = {
         </p>
       </div>
 
-      <form class="flex flex-col gap-6" name="contact" method="POST">
+      <form class="flex flex-col gap-6" id="contact-form">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="flex flex-col gap-2">
             <label for="name" class="text-sm font-medium text-on-surface-variant tracking-wide">
@@ -158,13 +158,28 @@ const stack = {
         <div>
           <Button type="submit" variant="primary">
             <span class="material-symbols-outlined text-base leading-none">send</span>
-            Enviar mensaje
+            Enviar por WhatsApp
           </Button>
         </div>
       </form>
     </div>
   </main>
 </BaseLayout>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name    = (form.elements.namedItem('name')    as HTMLInputElement).value.trim();
+    const email   = (form.elements.namedItem('email')   as HTMLInputElement).value.trim();
+    const subject = (form.elements.namedItem('subject') as HTMLInputElement).value.trim();
+    const message = (form.elements.namedItem('message') as HTMLTextAreaElement).value.trim();
+
+    const text = `Hola Eduardo, te contacto desde tu portafolio.\n\n*Nombre:* ${name}\n*Email:* ${email}\n*Asunto:* ${subject}\n\n*Mensaje:*\n${message}`;
+    const url  = `https://wa.me/529931473100?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+  });
+</script>
 
 <style>
   .material-symbols-outlined {
